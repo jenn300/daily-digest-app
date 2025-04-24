@@ -1,5 +1,7 @@
-export default function handler(req, res) {
-  res.status(200).json({
-    message: "This works using the Pages Router!",
-  });
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true
+  // REMOVE appDir to use Pages Router
 }
+
+module.exports = nextConfig
