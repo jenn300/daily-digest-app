@@ -126,3 +126,11 @@ export async function GET() {
 
   return Response.json({ headlines });
 }
+export async function GET() {
+  return new Response(JSON.stringify({ message: "It works!" }), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+}
