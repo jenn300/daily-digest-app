@@ -1,6 +1,6 @@
 const { Resend } = require('resend');
 
-const resend = new Resend(re_JmnxJ4ND_2LjUQneV5d5bhFZiHmSKVDvR); // Replace with your Resend key
+const resend = new Resend('re_JmnxJ4ND_2LjUQneV5d5bhFZiHmSKVDvR'); // your actual Resend API key
 
 export default async function handler(req, res) {
   const headlines = [
@@ -39,8 +39,8 @@ export default async function handler(req, res) {
 
   try {
     const data = await resend.emails.send({
-      from: 'Daily Digest <onboarding@resend.dev>',
-      to: jennifertsang300@gmail.com, // your email here
+      from: 'Daily Digest <onboarding@resend.dev>', // verified sender
+      to: 'jennifertsang300@gmail.com', // your email ✅
       subject: 'Your Daily News Digest',
       html
     });
