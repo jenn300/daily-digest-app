@@ -12,9 +12,9 @@ export default async function handler(req, res) {
   const allHeadlines = [];
 
   for (const topic of topics) {
-    const url = `https://newsapi.org/v2/top-headlines?q=${encodeURIComponent(
+    const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(
       topic
-    )}&language=en&pageSize=3&apiKey=${apiKey}`;
+    )}&language=en&sortBy=publishedAt&pageSize=2&apiKey=${apiKey}`;
 
     try {
       const response = await fetch(url);
