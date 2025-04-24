@@ -1,4 +1,4 @@
-import { Resend } from 'resend';
+const { Resend } = require('resend');
 
 const resend = new Resend(re_JmnxJ4ND_2LjUQneV5d5bhFZiHmSKVDvR); // Replace with your Resend key
 
