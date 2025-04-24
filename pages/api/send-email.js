@@ -1,6 +1,6 @@
 import { Resend } from 'resend';
 
-const resend = new Resend('re_JmnxJ4ND_2LjUQneV5d5bhFZiHmSKVDvR'); // Replace with your Resend key
+const resend = new Resend(re_JmnxJ4ND_2LjUQneV5d5bhFZiHmSKVDvR); // Replace with your Resend key
 
 export default async function handler(req, res) {
   const headlines = [
@@ -40,7 +40,7 @@ export default async function handler(req, res) {
   try {
     const data = await resend.emails.send({
       from: 'Daily Digest <noreply@yourdomain.com>',
-      to: 'jennifertsang300@gmail.com', // Change to your email
+      to: jennifertsang300@gmail.com, // your email here
       subject: 'Your Daily News Digest',
       html
     });
