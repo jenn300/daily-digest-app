@@ -93,3 +93,36 @@ export default function Home() {
     </div>
   );
 }
+export async function GET() {
+  const headlines = [
+    {
+      title: "LeBron drops 40 in playoff win 🏀",
+      summary: "LeBron James led the Lakers to a Game 5 victory with 40 points.",
+      link: "https://example.com/lebron-40"
+    },
+    {
+      title: "AI startup raises $100M 🤖",
+      summary: "Startup ZetaAI raised a $100M Series B to expand globally.",
+      link: "https://example.com/zetaai-raise"
+    }
+  ];
+
+  return Response.json({ headlines });
+}
+
+export async function GET() {
+  const headlines = [
+    {
+      title: "LeBron drops 40 in playoff win 🏀",
+      summary: "LeBron James led the Lakers to a Game 5 victory with 40 points.",
+      link: "https://example.com/lebron-40"
+    },
+    {
+      title: "AI startup raises $100M 🤖",
+      summary: "Startup ZetaAI raised a $100M Series B to expand globally.",
+      link: "https://example.com/zetaai-raise"
+    }
+  ];
+
+  return Response.json({ headlines });
+}
