@@ -1,3 +1,5 @@
+// Trigger redeploy
+
 const { Resend } = require('resend');
 
 const resend = new Resend('re_JmnxJ4ND_2LjUQneV5d5bhFZiHmSKVDvR'); // your actual Resend API key
