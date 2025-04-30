@@ -14,18 +14,20 @@ export default async function handler(req, res) {
   }
 
   try {
-    // ✅ 1. Save to Google Sheet (INSIDE the handler)
+    console.log("📥 Subscribing:", email);
+
+    // 1. Save to Google Sheet
     await fetch("https://script.google.com/macros/s/AKfycbwBE6koiz40HzKTBSQDRdyoD_G-5B97dHDSa_fwrGhjRGSfk5hcjQuwU5nYmnN5_dD7PA/exec", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email })
     });
 
-    // ✅ 2. Get live headlines
+    // 2. Get latest headlines
     const response = await fetch('https://daily-digest-app-7h8v.vercel.app/api/send-digest');
     const { headlines } = await response.json();
 
-    // ✅ 3. Build HTML email
+    // 3. Build email HTML
     const html = `
       <div style="font-family:sans-serif; padding:16px;">
         <h2>📰 Welcome! Here are today's headlines:</h2>
@@ -44,18 +46,22 @@ export default async function handler(req, res) {
       </div>
     `;
 
-    // ✅ 4. Send welcome email
+    // 4. Send welcome email
     await resend.emails.send({
       from: 'Daily Digest <onboarding@resend.dev>',
       to: email,
       subject: 'Welcome to the Daily Digest!',
       html
+    }).then(() => {
+      console.log("✅ Email sent to:", email);
+    }).catch((err) => {
+      console.error("❌ Resend email failed:", err);
     });
 
     return res.status(200).json({ status: 'ok' });
 
   } catch (err) {
-    console.error('Error in /api/subscribe:', err);
+    console.error('❌ Error in /api/subscribe:', err);
     return res.status(500).json({ status: 'error', message: 'Something went wrong' });
   }
 }
