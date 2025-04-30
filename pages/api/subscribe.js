@@ -1,3 +1,14 @@
+const { Resend } = require('resend');
+
+const resend = new Resend('re_JmnxJ4ND_2LjUQneV5d5bhFZiHmSKVDvR');
+
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ status: 'error', message: 'Method Not Allowed' });
+  }
+
+  const { email } = req.body;
+
 import { useState } from 'react';
 
 export default function Subscribe() {
