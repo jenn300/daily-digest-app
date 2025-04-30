@@ -1,3 +1,10 @@
+// Send to Google Sheet
+await fetch("https://script.google.com/macros/s/AKfycbwBE6koiz40HzKTBSQDRdyoD_G-5B97dHDSa_fwrGhjRGSfk5hcjQuwU5nYmnN5_dD7PA/exec", {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ email })
+});
+
 const { Resend } = require('resend');
 
 const resend = new Resend('re_JmnxJ4ND_2LjUQneV5d5bhFZiHmSKVDvR');
