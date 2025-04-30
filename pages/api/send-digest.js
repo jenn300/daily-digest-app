@@ -10,11 +10,12 @@ export default async function handler(req, res) {
   ];
 
   const allHeadlines = [];
+  const trustedDomains = "cbc.ca,cnn.com,bbc.co.uk,bloomberg.com,nytimes.com";
 
   for (const topic of topics) {
     const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(
       topic
-    )}&language=en&sortBy=publishedAt&pageSize=2&apiKey=${apiKey}`;
+    )}&language=en&sortBy=publishedAt&pageSize=4&domains=${trustedDomains}&apiKey=${apiKey}`;
 
     try {
       const response = await fetch(url);
@@ -26,6 +27,7 @@ export default async function handler(req, res) {
           title: article.title,
           summary: article.description || "",
           link: article.url,
+          source: article.source.name
         }));
 
         allHeadlines.push(...topicHeadlines);
@@ -36,6 +38,5 @@ export default async function handler(req, res) {
   }
 
   const top10 = allHeadlines.slice(0, 10);
-
   res.status(200).json({ headlines: top10 });
 }
