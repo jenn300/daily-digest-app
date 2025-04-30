@@ -8,6 +8,9 @@ export default async function handler(req, res) {
   }
 
   const { email } = req.body;
+  if (!email || !email.includes('@')) {
+    return res.status(400).json({ status: 'error', message: 'Invalid email' });
+  }
 
   try {
     const response = await fetch('https://daily-digest-app-7h8v.vercel.app/api/send-digest');
