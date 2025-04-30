@@ -9,45 +9,38 @@ export default async function handler(req, res) {
 
   const { email } = req.body;
 
-import { useState } from 'react';
+  try {
+    const response = await fetch('https://daily-digest-app-7h8v.vercel.app/api/send-digest');
+    const { headlines } = await response.json();
 
-export default function Subscribe() {
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState(null);
+    const html = `
+      <div style="font-family:sans-serif; padding:16px;">
+        <h2>📰 Welcome! Here are today's headlines:</h2>
+        <ul>
+          ${headlines
+            .map(
+              (item) => `
+              <li style="margin-bottom:12px;">
+                <strong>${item.topic.toUpperCase()}</strong> — 
+                <a href="${item.link}" target="_blank">${item.title}</a>
+                <br/><small>${item.summary}</small>
+              </li>`
+            )
+            .join('')}
+        </ul>
+      </div>
+    `;
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setStatus('loading');
-
-    const res = await fetch('/api/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
+    await resend.emails.send({
+      from: 'Daily Digest <onboarding@resend.dev>',
+      to: email,
+      subject: 'Welcome to the Daily Digest!',
+      html
     });
 
-    const data = await res.json();
-    setStatus(data.status);
-    setEmail('');
+    return res.status(200).json({ status: 'ok' });
+  } catch (err) {
+    console.error('Error subscribing user:', err);
+    return res.status(500).json({ status: 'error', message: 'Could not send email' });
   }
-
-  return (
-    <div style={{ fontFamily: 'sans-serif', padding: 40 }}>
-      <h1>📩 Subscribe to the Daily Digest</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
-          style={{ padding: 10, fontSize: 16, width: 300 }}
-        />
-        <button type="submit" style={{ marginLeft: 10, padding: 10, fontSize: 16 }}>
-          Subscribe
-        </button>
-      </form>
-      {status === 'ok' && <p style={{ color: 'green' }}>You're subscribed!</p>}
-      {status === 'error' && <p style={{ color: 'red' }}>Something went wrong.</p>}
-    </div>
-  );
 }
