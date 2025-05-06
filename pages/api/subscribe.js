@@ -51,7 +51,7 @@ export default async function handler(req, res) {
     });
 
     await transporter.sendMail({
-      from: '"Daily Digest" <YOUR_VERIFIED_EMAIL@gmail.com>',
+      from: '"Daily Digest" <jennifertsang300@gmail.com>',
       to: email,
       subject: 'Welcome to the Daily Digest!',
       html
