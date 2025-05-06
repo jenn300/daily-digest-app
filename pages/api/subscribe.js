@@ -1,6 +1,4 @@
-const { Resend } = require('resend');
-
-const resend = new Resend('re_JmnxJ4ND_2LjUQneV5d5bhFZiHmSKVDvR');
+import nodemailer from 'nodemailer';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -27,41 +25,43 @@ export default async function handler(req, res) {
     const response = await fetch('https://daily-digest-app-7h8v.vercel.app/api/send-digest');
     const { headlines } = await response.json();
 
-    // 3. Build email HTML
     const html = `
       <div style="font-family:sans-serif; padding:16px;">
         <h2>📰 Welcome! Here are today's headlines:</h2>
         <ul>
-          ${headlines
-            .map(
-              (item) => `
-              <li style="margin-bottom:12px;">
-                <strong>${item.topic.toUpperCase()}</strong> — 
-                <a href="${item.link}" target="_blank">${item.title}</a>
-                <br/><small>${item.summary}</small>
-              </li>`
-            )
-            .join('')}
+          ${headlines.map(item => `
+            <li style="margin-bottom:12px;">
+              <strong>${item.topic.toUpperCase()}</strong> — 
+              <a href="${item.link}" target="_blank">${item.title}</a>
+              <br/><small>${item.summary}</small>
+            </li>
+          `).join('')}
         </ul>
       </div>
     `;
 
-    // 4. Send welcome email
-    await resend.emails.send({
-      from: 'Daily Digest <onboarding@resend.dev>',
+    // 3. Send welcome email via Brevo SMTP
+    const transporter = nodemailer.createTransport({
+      host: "smtp-relay.brevo.com",
+      port: 587,
+      auth: {
+        user: "jennifertsang300@gmail.com", // your Brevo sender
+        pass: "t7O4bZfGgraEdRDX"             // from Brevo dashboard
+      }
+    });
+
+    await transporter.sendMail({
+      from: '"Daily Digest" <YOUR_VERIFIED_EMAIL@gmail.com>',
       to: email,
       subject: 'Welcome to the Daily Digest!',
       html
-    }).then(() => {
-      console.log("✅ Email sent to:", email);
-    }).catch((err) => {
-      console.error("❌ Resend email failed:", err);
     });
 
+    console.log("✅ Email sent to:", email);
     return res.status(200).json({ status: 'ok' });
 
   } catch (err) {
-    console.error('❌ Error in /api/subscribe:', err);
+    console.error("❌ Error in /api/subscribe:", err);
     return res.status(500).json({ status: 'error', message: 'Something went wrong' });
   }
 }
