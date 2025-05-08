@@ -45,13 +45,14 @@ export default async function handler(req, res) {
       host: "smtp-relay.brevo.com",
       port: 587,
       auth: {
-        user: "jennifertsang300@gmail.com", // your Brevo sender
-        pass: "t7O4bZfGgraEdRDX"             // from Brevo dashboard
-      }
+  user: process.env.BREVO_SMTP_USER,
+  pass: process.env.BREVO_SMTP_PASS
+}
+
     });
 
     await transporter.sendMail({
-      from: '"Daily Digest" <jennifertsang300@gmail.com>',
+      from: '"Daily Digest" <${process.env.BREVO_SMTP_USER}>',
       to: email,
       subject: 'Welcome to the Daily Digest!',
       html
