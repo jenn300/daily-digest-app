@@ -42,8 +42,8 @@ export default async function handler(req, res) {
 
     // 3. Send welcome email via Brevo SMTP
     const transporter = nodemailer.createTransport({
-      host: "smtp-relay.brevo.com",
-      port: 587,
+      host: process.env.BREVO_SMTP_HOST,
+port: parseInt(process.env.BREVO_SMTP_PORT),
       auth: {
   user: process.env.BREVO_SMTP_USER,
   pass: process.env.BREVO_SMTP_PASS
@@ -52,7 +52,7 @@ export default async function handler(req, res) {
     });
 
     await transporter.sendMail({
-      from: '"Daily Digest" <${process.env.BREVO_SMTP_USER}>',
+  from: `Daily Digest <${process.env.BREVO_SMTP_USER}>`,
       to: email,
       subject: 'Welcome to the Daily Digest!',
       html
